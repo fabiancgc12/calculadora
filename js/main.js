@@ -17,7 +17,9 @@ let operation = () => prevValue
 function pushValue(digit){
   const currentValue = parseFloat(display.innerHTML);
   //checking if display is number, if it is concat digit if not just put the digit
-  if (isNaN(currentValue))
+  if (display.innerHTML === ".")
+    putValueOnDisplay(`${display.innerHTML}${digit}`)
+  else if (isNaN(currentValue))
     putValueOnDisplay(digit)
   else
     putValueOnDisplay(`${display.innerHTML}${digit}`)
@@ -48,6 +50,7 @@ equalButton.addEventListener("click",() => {
 })
 
 sumButton.addEventListener("click", () => {
+  // saving prevValue only if its a number
   if (!isNaN(parseFloat(display.innerHTML)))
     prevValue = display.innerHTML
   putValueOnDisplay("+")
