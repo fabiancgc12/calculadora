@@ -17,7 +17,14 @@ function pushValue(digit){
 
 values.forEach(el => {
   const value = el.dataset.value
-  el.addEventListener("click", () => pushValue(value))
+  if (value === ".")
+    el.addEventListener("click", () => {
+      //checking if display already has a dot
+      if (!display.innerHTML.includes("."))
+        pushValue(value)
+    })
+  else
+    el.addEventListener("click", () => pushValue(value))
 })
 
 function putValueOnDisplay(value){
