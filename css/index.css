@@ -1,0 +1,147 @@
+*,
+*::before,
+*::after{
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body{
+  display: grid;
+  place-items: center;
+  background-image: url("../assets/background.png");
+  background-repeat: no-repeat;
+
+  --darkPrimaryColor:#565554;
+  --primaryColor:#9E9E9E;
+  --lightPrimaryColor:#455A64;
+  --accentColor:#009688
+}
+
+.calculator{
+  width: 300px;
+  display: grid;
+  grid-template-columns: repeat(4,1fr);
+  grid-template-rows: repeat(6,1fr);
+  grid-template-areas: "display display display display"
+                        "pow sqrt res ce"
+                        "v1 v2 v3 div"
+                        "v4 v5 v6 by"
+                        "v7 v8 v9 minus"
+                        "v0 dot equal sum";
+}
+
+.display {
+  grid-area: display;
+  text-align: end;
+  background-color: whitesmoke;
+}
+
+.calculator > *{
+  border: 1px solid black;
+}
+
+.calculator >*:not(.display){
+  display: grid;
+  place-items: center;
+  aspect-ratio:1/1;
+  font-size:2em;
+  cursor: pointer;
+  transition: filter ease-in .05s;
+}
+
+.calculator div:not(.display):hover{
+  filter:brightness(80%);
+}
+
+[data-value],.dot{
+  background-color: var(--darkPrimaryColor);
+}
+
+.pow,.sqrt,.res,.div,.by,.sum,.minus,.ce{
+  background-color: var(--primaryColor);
+}
+
+.equal {
+  background-color: var(--accentColor);
+}
+
+.pow{
+  grid-area: pow;
+}
+
+.sqrt{
+  grid-area: sqrt;
+}
+
+.res{
+  grid-area: res;
+}
+
+.ce{
+  grid-area: ce;
+}
+
+.sum{
+  grid-area: sum;
+}
+
+.minus{
+  grid-area: minus;
+}
+
+.div{
+  grid-area: div;
+}
+
+.by{
+  grid-area: by;
+}
+
+.equal{
+  grid-area: equal;
+}
+
+.dot{
+  grid-area: dot;
+}
+
+[data-value="0"]{
+  grid-area: v0;
+}
+
+[data-value="1"]{
+  grid-area: v1;
+}
+
+[data-value="2"]{
+  grid-area: v2;
+}
+
+[data-value="3"]{
+  grid-area: v3;
+}
+
+[data-value="4"]{
+  grid-area: v4;
+}
+
+[data-value="5"]{
+  grid-area: v5;
+}
+
+[data-value="6"]{
+  grid-area: v6;
+}
+
+[data-value="7"]{
+  grid-area: v7;
+}
+
+[data-value="8"]{
+  grid-area: v8;
+}
+
+[data-value="9"]{
+  grid-area: v9;
+}
