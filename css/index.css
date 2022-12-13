@@ -76,7 +76,7 @@ body{
   background-color: var(--darkPrimaryColor);
 }
 
-.pow,.sqrt,.res,.div,.by,.sum,.minus,.ce{
+.pow,.sqrt,.module,.div,.by,.sum,.minus,.ce{
   background-color: var(--primaryColor);
 }
 
@@ -92,7 +92,7 @@ body{
   grid-area: sqrt;
 }
 
-.res{
+.module{
   grid-area: res;
 }
 
