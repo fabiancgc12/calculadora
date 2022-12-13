@@ -33,6 +33,7 @@ body{
                         "v4 v5 v6 by"
                         "v7 v8 v9 minus"
                         "v0 dot equal sum";
+  box-shadow: black 0px 5px 20px 5px;
 }
 
 .display {
