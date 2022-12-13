@@ -11,7 +11,7 @@ body{
   place-items: center;
   background-image: url("../assets/background.png");
   background-repeat: no-repeat;
-
+  height: 100vh;
   --darkPrimaryColor:#565554;
   --primaryColor:#9E9E9E;
   --lightPrimaryColor:#455A64;
@@ -24,6 +24,7 @@ body{
   padding: 10px;
   gap: 5px;
   background: var(--bgColor);
+  border-radius: 5px;
   grid-template-columns: repeat(4,minmax(70px, 1fr));
   grid-template-rows: repeat(6,1fr);
   grid-template-areas: "display display display display"
@@ -55,12 +56,12 @@ body{
 
 .calculator > *{
   border: 1px solid black;
+  border-radius: 5px;
 }
 
 .calculator >*:not(.display){
   display: grid;
   place-items: center;
-  aspect-ratio:1/1;
   font-size:2em;
   cursor: pointer;
   transition: filter ease-in .05s;
