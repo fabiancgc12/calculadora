@@ -8,14 +8,22 @@ const byButton = document.querySelector(".by");
 const divButton = document.querySelector(".div");
 const dotButton = document.querySelector(".dot");
 const resetButton = document.querySelector(".reset");
-const values = document.querySelectorAll(".value");
+const equalButton = document.querySelector(".equal");
+const inputValues = document.querySelectorAll(".value");
+
+let prevValue = 0;
+let operation = () => prevValue
 
 function pushValue(digit){
-  const currentValue = display.innerHTML;
-  putValueOnDisplay(`${currentValue}${digit}`)
+  const currentValue = parseFloat(display.innerHTML);
+  //checking if display is number, if it is concat digit if not just put the digit
+  if (isNaN(currentValue))
+    putValueOnDisplay(digit)
+  else
+    putValueOnDisplay(`${display.innerHTML}${digit}`)
 }
 
-values.forEach(el => {
+inputValues.forEach(el => {
   const value = el.dataset.value
   if (value === ".")
     el.addEventListener("click", () => {
@@ -33,4 +41,17 @@ function putValueOnDisplay(value){
 
 resetButton.addEventListener("click",() => {
   putValueOnDisplay("")
+})
+
+equalButton.addEventListener("click",() => {
+  operation()
+})
+
+sumButton.addEventListener("click", () => {
+  if (!isNaN(parseFloat(display.innerHTML)))
+    prevValue = display.innerHTML
+  putValueOnDisplay("+")
+  operation = () => {
+    display.textContent = `${parseFloat(prevValue) + parseFloat(display.innerHTML)}`
+  }
 })
