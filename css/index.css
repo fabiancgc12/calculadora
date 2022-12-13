@@ -32,9 +32,34 @@ body{
 }
 
 .display {
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  padding: .5em;
   grid-area: display;
   text-align: end;
   background-color: whitesmoke;
+}
+
+.display span {
+  position: relative;
+  font-size: 3em;
+  padding-right: 5px;
+  border-right: .1em solid;
+  border-color: black;
+  animation: caret .75s infinite alternate;
+}
+
+@keyframes caret {
+  0% {
+    border-color: black;
+  }
+  50% {
+    border-color: transparent;
+  }
+  100%{
+    border-color: black;
+  }
 }
 
 .calculator > *{
