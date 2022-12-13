@@ -98,7 +98,7 @@ function calculate(){
   prevOperandValue = secondValue
   prevOperator = operator
   // debugger
-  if (resp)
+  if (resp || resp === 0)
     putValueOnDisplay(resp)
 }
 
