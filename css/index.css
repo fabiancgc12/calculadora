@@ -15,13 +15,16 @@ body{
   --darkPrimaryColor:#565554;
   --primaryColor:#9E9E9E;
   --lightPrimaryColor:#455A64;
-  --accentColor:#009688
+  --accentColor:#009688;
+  --bgColor:#BDBDBD
 }
 
 .calculator{
-  width: 300px;
   display: grid;
-  grid-template-columns: repeat(4,1fr);
+  padding: 10px;
+  gap: 5px;
+  background: var(--bgColor);
+  grid-template-columns: repeat(4,minmax(70px, 1fr));
   grid-template-rows: repeat(6,1fr);
   grid-template-areas: "display display display display"
                         "pow sqrt res ce"
@@ -48,18 +51,6 @@ body{
   border-right: .1em solid;
   border-color: black;
   animation: caret .75s infinite alternate;
-}
-
-@keyframes caret {
-  0% {
-    border-color: black;
-  }
-  50% {
-    border-color: transparent;
-  }
-  100%{
-    border-color: black;
-  }
 }
 
 .calculator > *{
@@ -169,4 +160,16 @@ body{
 
 [data-value="9"]{
   grid-area: v9;
+}
+
+@keyframes caret {
+  0% {
+    border-color: black;
+  }
+  50% {
+    border-color: transparent;
+  }
+  100%{
+    border-color: black;
+  }
 }
