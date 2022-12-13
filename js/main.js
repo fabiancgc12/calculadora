@@ -50,12 +50,14 @@ resetButton.addEventListener("click",() => {
 equalButton.addEventListener("click",() => calculate())
 
 sumButton.addEventListener("click", () => {
-  calculate()
+  if (prevOperator === "+")
+    calculate()
   pushValue("+")
 })
 
 resButton.addEventListener("click",() =>{
-  calculate()
+  if (prevOperator === "-")
+    calculate()
   pushValue("-")
 })
 
@@ -64,10 +66,16 @@ function calculate(){
   let isFirstNegative = false
   //checking if the display has a "-" at the beggining meaning a negative number
   const firstOperator = currentValue[0].match(/[+-]/g)
-  if (currentValue[0] === "-"){
-    currentValue = currentValue.substr(1,currentValue.length)
-    isFirstNegative = true
+  if (firstOperator?.length > 0){
+    if (currentValue[0] === "-"){
+      currentValue = currentValue.substr(1,currentValue.length)
+      isFirstNegative = true
+    } else {
+      //is it is other operator the make the first value a 0
+      currentValue = `0${currentValue}`
+    }
   }
+
 
   //getting values and operators
   let [firstValue,secondValue] = currentValue.split(/[+-]/g);
@@ -83,17 +91,10 @@ function calculate(){
     operator = prevOperator
   }
 
-
   // if prev is still empty it means there is no value to make and operation,
   // just put the first value on the display
   if (!secondValue){
     putValueOnDisplay(firstValue)
-  }
-
-  //if the is a second value but not first it means the operations is "-operator-number"
-  //then make the first a 0
-  if (!firstValue){
-    firstValue = 0
   }
 
   console.log({
