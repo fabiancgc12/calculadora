@@ -48,7 +48,8 @@ body{
 
 .displayWrapper span {
   position: relative;
-  font-size: 3em;
+  font-size: 3rem;
+  height: 3.25rem;
   padding-right: 5px;
   border-right: .1em solid;
   border-color: black;
@@ -76,7 +77,7 @@ body{
   background-color: var(--darkPrimaryColor);
 }
 
-.pow,.sqrt,.module,.div,.by,.sum,.minus,.ce{
+.pow,.sqrt,.module,.div,.by,.sum,.minus,.reset{
   background-color: var(--primaryColor);
 }
 
@@ -96,7 +97,7 @@ body{
   grid-area: res;
 }
 
-.ce{
+.reset{
   grid-area: ce;
 }
 
