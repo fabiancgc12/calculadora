@@ -17,8 +17,6 @@ let prevOperator = undefined
 
 function pushValue(digit){
   const currentValue = display.innerHTML;
-  //checking if display is number, if it is concat digit if not just put the digit
-  // debugger
   if (currentValue === "0")
     putValueOnDisplay(digit)
   else
@@ -50,16 +48,27 @@ resetButton.addEventListener("click",() => {
 equalButton.addEventListener("click",() => calculate())
 
 sumButton.addEventListener("click", () => {
-  if (prevOperator === "+")
-    calculate()
-  pushValue("+")
+  handleOperationInputs("+")
+
 })
 
 resButton.addEventListener("click",() =>{
-  if (prevOperator === "-")
-    calculate()
-  pushValue("-")
+  handleOperationInputs("-")
 })
+
+function handleOperationInputs(operator){
+  if (prevOperator === operator)
+    calculate()
+  if (operator === "-"){
+    const subs = display.innerHTML.substr(1, display.innerHTML.length - 1)
+    console.log(subs)
+    if (!subs.includes("-") && display.innerHTML !== "-")
+      pushValue("-")
+  } else {
+    if (!display.innerHTML.includes(operator))
+      pushValue(operator)
+  }
+}
 
 function calculate(){
   const {firstValue,secondValue,operator} = getOperationInputs()
@@ -123,6 +132,6 @@ function getOperationInputs(){
   }
 
   return {
-    firstOperator,secondValue,operator
+    firstValue,secondValue,operator
   }
 }
