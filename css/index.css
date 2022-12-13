@@ -36,7 +36,7 @@ body{
   box-shadow: black 0px 5px 20px 5px;
 }
 
-.display {
+.displayWrapper {
   display: flex;
   align-items: center;
   justify-content: end;
@@ -46,7 +46,7 @@ body{
   background-color: whitesmoke;
 }
 
-.display span {
+.displayWrapper span {
   position: relative;
   font-size: 3em;
   padding-right: 5px;
@@ -60,7 +60,7 @@ body{
   border-radius: 5px;
 }
 
-.calculator >*:not(.display){
+.calculator button{
   display: grid;
   place-items: center;
   font-size:2em;
@@ -68,11 +68,11 @@ body{
   transition: filter ease-in .05s;
 }
 
-.calculator div:not(.display):hover{
+.calculator button:hover{
   filter:brightness(80%);
 }
 
-[data-value],.dot{
+[data-value]{
   background-color: var(--darkPrimaryColor);
 }
 
