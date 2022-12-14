@@ -15,14 +15,7 @@ const operatorButtons = document.querySelectorAll(".operator");
 //we only are using this if we are carrying previus operation
 let prevOperandValue = undefined;
 let prevOperator = undefined
-
-function pushValue(digit){
-  const currentValue = display.innerHTML;
-  if (currentValue === "0")
-    putValueOnDisplay(digit)
-  else
-    putValueOnDisplay(`${display.innerHTML}${digit}`)
-}
+let currentOperator = undefined
 
 inputValues.forEach(el => {
   const value = el.dataset.value
@@ -43,27 +36,42 @@ operatorButtons.forEach(el => {
   })
 })
 
-function putValueOnDisplay(value){
-  display.textContent = value
-}
-
 resetButton.addEventListener("click",() => {
   prevOperandValue = undefined
   prevOperator = undefined
+  currentOperator = undefined
   putValueOnDisplay(0)
 })
 
 equalButton.addEventListener("click",() => calculate())
 
+function pushValue(value){
+  const currentValue = display.innerHTML;
+  if (currentValue === "0")
+    putValueOnDisplay(value)
+  else
+    putValueOnDisplay(`${display.innerHTML}${value}`)
+}
+
+function putValueOnDisplay(value){
+  display.textContent = value
+}
+
 function handleOperationInputs(operator){
   if (prevOperator === operator)
     calculate()
+  currentOperator = operator
   if (operator === "-"){
     const subs = display.innerHTML.substr(1, display.innerHTML.length - 1)
     console.log(subs)
     if (!subs.includes("-") && display.innerHTML !== "-")
       pushValue("-")
-  } else {
+  }
+  if (operator === "mod"){
+    if (!display.innerHTML.includes(operator))
+      pushValue(" mod ")
+  }
+  else {
     if (!display.innerHTML.includes(operator))
       pushValue(operator)
   }
@@ -71,7 +79,6 @@ function handleOperationInputs(operator){
 
 function calculate(){
   const {firstValue,secondValue,operator} = getOperationInputs()
-
   console.log({
     firstValue,secondValue,operator
   })
@@ -96,12 +103,16 @@ function calculate(){
     case "/":
       resp = parseFloat(firstValue) / parseFloat(secondValue)
       break;
+    case "mod":
+      resp = parseFloat(firstValue) % parseFloat(secondValue)
+      break
     default:
       resp = undefined
       break;
   }
   prevOperandValue = secondValue
   prevOperator = operator
+  currentOperator = undefined
   // debugger
   if (resp || resp === 0)
     putValueOnDisplay(resp)
@@ -125,8 +136,12 @@ function getOperationInputs(){
   }
 
   //getting values and operators
-  let [firstValue,secondValue] = currentValue.split(regExp);
-  let operator = currentValue.substr(firstValue.length,1)
+  let operator = currentOperator
+  let firstValue,secondValue
+  if (operator === "mod")
+    [firstValue,secondValue] = currentValue.split(" mod ");
+  else
+    [firstValue,secondValue] = currentValue.split(regExp);
 
   //multipliying first value by (-1) if it was negative
   if (isFirstNegative)
