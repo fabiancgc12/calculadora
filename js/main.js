@@ -12,6 +12,8 @@ const equalButton = document.querySelector(".equal");
 const inputValues = document.querySelectorAll(".value");
 const operatorButtons = document.querySelectorAll(".operator");
 
+const errorMessage = "ERROR"
+
 //we only are using this if we are carrying previus operation
 let prevOperandValue = undefined;
 let prevOperator = undefined;
@@ -37,14 +39,9 @@ operatorButtons.forEach(el => {
   })
 })
 
-resetButton.addEventListener("click",() => {
-  prevOperandValue = undefined
-  prevOperator = undefined
-  currentOperator = undefined
-  firstValue = undefined;
-  secondValue = undefined;
-  putValueOnDisplay(firstValue)
-})
+resetButton.addEventListener("click",resetCalculator)
+
+
 
 equalButton.addEventListener("click",() => calculate())
 
@@ -88,6 +85,15 @@ function putValueOnDisplay(value){
   display.textContent = value
 }
 
+function resetCalculator() {
+  prevOperandValue = undefined
+  prevOperator = undefined
+  currentOperator = undefined
+  firstValue = undefined;
+  secondValue = undefined;
+  putValueOnDisplay(firstValue)
+}
+
 function handleOperationInputs(operator){
   // if there is a first and second value then calculate the result before everything
   if (firstValue && secondValue)
@@ -117,7 +123,7 @@ function calculate(){
   let first = firstValue ?? 0;
   let second = secondValue ?? 0;
 
-  if (!secondValue && !operator){
+  if ((secondValue === undefined) && !operator){
     second = prevOperandValue
     operator = prevOperator
   }
@@ -152,16 +158,18 @@ function calculate(){
       resp = undefined
       break;
   }
-  firstValue = resp;
-  //storing values of the prev operation
-  prevOperandValue = second
-  prevOperator = operator
-  //resetting operator and secondvalue
-  currentOperator = undefined;
-  secondValue = undefined
-
-  // debugger
-  if (resp || resp === 0){
+  if (isNaN(resp) || resp === Number.POSITIVE_INFINITY){
+    resetCalculator()
+    putValueOnDisplay(errorMessage)
+  }
+  else {
+    firstValue = resp;
+    //storing values of the prev operation
+    prevOperandValue = second
+    prevOperator = operator
+    //resetting operator and secondvalue
+    currentOperator = undefined;
+    secondValue = undefined;
     putValueOnDisplay(resp)
   }
 }
