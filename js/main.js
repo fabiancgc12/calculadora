@@ -93,6 +93,9 @@ function calculate(){
     case "*":
       resp = parseFloat(firstValue) * parseFloat(secondValue)
       break;
+    case "/":
+      resp = parseFloat(firstValue) / parseFloat(secondValue)
+      break;
     default:
       resp = undefined
       break;
@@ -104,12 +107,12 @@ function calculate(){
     putValueOnDisplay(resp)
 }
 
-const regExp = /[+-\/*]/g
+const regExp = /[+\-\*\/]/g
 
 function getOperationInputs(){
   let currentValue = display.innerHTML;
   let isFirstNegative = false
-  //checking if the display has a "-" at the beggining meaning a negative number
+  //checking if the display has a "-" at the beginning meaning a negative number
   const firstOperator = currentValue[0].match(regExp)
   if (firstOperator?.length > 0){
     if (currentValue[0] === "-"){
