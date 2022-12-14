@@ -122,13 +122,13 @@ function calculate(){
   let resp
   switch (operator) {
     case "+":
-      resp = currentValue + prevValue
+      resp =  prevValue + currentValue
       break;
     case "-":
-      resp = currentValue - prevValue
+      resp =  prevValue - currentValue
       break;
     case "*":
-      resp = currentValue * prevValue
+      resp =  prevValue * currentValue
       break;
     case "/":
       resp = prevValue / currentValue
@@ -141,6 +141,14 @@ function calculate(){
       break;
   }
   if (resp === undefined) return
+  if (isNaN(resp) || resp === Number.POSITIVE_INFINITY){
+    resetCalculator()
+    firstValue = undefined
+    updateDisplay()
+    display.innerHTML = errorMessage;
+    return
+
+  }
   firstValue = resp;
   //storing values of the prev operation
   // prevOperandValue = second
