@@ -142,7 +142,10 @@ function calculate(){
       break;
     case "mod":
       resp =  prevValue % currentValue
-      break
+      break;
+    case "^":
+      resp =  prevValue ** currentValue
+      break;
     default:
       resp = undefined
       break;
@@ -164,44 +167,4 @@ function calculate(){
   currentOperator = undefined;
   secondValue = undefined;
   updateDisplay()
-}
-
-const regExp = /[+\-\*\/]/g
-
-function getOperationInputs(){
-  let currentValue = display.innerHTML;
-  let isFirstNegative = false
-  //checking if the display has a "-" at the beginning meaning a negative number
-  const firstOperator = currentValue[0].match(regExp)
-  if (firstOperator?.length > 0){
-    if (currentValue[0] === "-"){
-      currentValue = currentValue.substr(1,currentValue.length)
-      isFirstNegative = true
-    } else {
-      //is it is other operator the make the first value a 0
-      currentValue = `0${currentValue}`
-    }
-  }
-
-  //getting values and operators
-  let operator = currentOperator
-  let firstValue,secondValue
-  if (operator === "mod")
-    [firstValue,secondValue] = currentValue.split(" mod ");
-  else
-    [firstValue,secondValue] = currentValue.split(regExp);
-
-  //multipliying first value by (-1) if it was negative
-  if (isFirstNegative)
-    firstValue = parseFloat(firstValue)*(-1)
-
-  //if there is no second value and operator it means we are carrying the prev operation
-  if (!secondValue && !operator){
-    // secondValue = prevOperandValue
-    // operator = prevOperator
-  }
-
-  return {
-    firstValue,secondValue,operator
-  }
 }
