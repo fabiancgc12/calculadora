@@ -77,6 +77,12 @@ function resetCalculator() {
 }
 
 function handleOperationInputs(operator){
+  if (firstValue === "-") return
+  if (operator === "-" && !firstValue){
+    firstValue="-";
+    updateDisplay()
+    return
+  }
   if (firstValue === "") {
     currentOperator = operator;
     updateDisplay()
@@ -84,6 +90,7 @@ function handleOperationInputs(operator){
   }
   if (secondValue || secondValue == 0)
     calculate()
+
   currentOperator = operator;
   secondValue = firstValue;
   firstValue = ""
