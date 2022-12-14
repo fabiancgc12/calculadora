@@ -10,6 +10,7 @@ const dotButton = document.querySelector(".dot");
 const resetButton = document.querySelector(".reset");
 const equalButton = document.querySelector(".equal");
 const inputValues = document.querySelectorAll(".value");
+const operatorButtons = document.querySelectorAll(".operator");
 
 //we only are using this if we are carrying previus operation
 let prevOperandValue = undefined;
@@ -35,6 +36,13 @@ inputValues.forEach(el => {
     el.addEventListener("click", () => pushValue(value))
 })
 
+operatorButtons.forEach(el => {
+  const operator = el.dataset.value;
+  el.addEventListener("click",() => {
+    handleOperationInputs(operator)
+  })
+})
+
 function putValueOnDisplay(value){
   display.textContent = value
 }
@@ -46,15 +54,6 @@ resetButton.addEventListener("click",() => {
 })
 
 equalButton.addEventListener("click",() => calculate())
-
-sumButton.addEventListener("click", () => {
-  handleOperationInputs("+")
-
-})
-
-resButton.addEventListener("click",() =>{
-  handleOperationInputs("-")
-})
 
 function handleOperationInputs(operator){
   if (prevOperator === operator)
@@ -91,6 +90,9 @@ function calculate(){
     case "-":
       resp = parseFloat(firstValue) - parseFloat(secondValue)
       break;
+    case "*":
+      resp = parseFloat(firstValue) * parseFloat(secondValue)
+      break;
     default:
       resp = undefined
       break;
@@ -102,11 +104,13 @@ function calculate(){
     putValueOnDisplay(resp)
 }
 
+const regExp = /[+-\/*]/g
+
 function getOperationInputs(){
   let currentValue = display.innerHTML;
   let isFirstNegative = false
   //checking if the display has a "-" at the beggining meaning a negative number
-  const firstOperator = currentValue[0].match(/[+-]/g)
+  const firstOperator = currentValue[0].match(regExp)
   if (firstOperator?.length > 0){
     if (currentValue[0] === "-"){
       currentValue = currentValue.substr(1,currentValue.length)
@@ -118,7 +122,7 @@ function getOperationInputs(){
   }
 
   //getting values and operators
-  let [firstValue,secondValue] = currentValue.split(/[+-]/g);
+  let [firstValue,secondValue] = currentValue.split(regExp);
   let operator = currentValue.substr(firstValue.length,1)
 
   //multipliying first value by (-1) if it was negative
