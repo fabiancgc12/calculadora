@@ -77,7 +77,11 @@ function resetCalculator() {
 }
 
 function handleOperationInputs(operator){
-  if (firstValue === "") return
+  if (firstValue === "") {
+    currentOperator = operator;
+    updateDisplay()
+    return
+  }
   if (secondValue || secondValue == 0)
     calculate()
   currentOperator = operator;
@@ -130,7 +134,7 @@ function calculate(){
       resp = prevValue / currentValue
       break;
     case "mod":
-      resp = currentValue % prevValue
+      resp =  prevValue % currentValue
       break
     default:
       resp = undefined
