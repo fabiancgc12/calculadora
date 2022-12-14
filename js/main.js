@@ -112,30 +112,31 @@ function handleOperationInputs(operator){
 function calculate(){
   // const {firstValue,secondValue,operator} = getOperationInputs()
   let operator = currentOperator;
-  let first = parseFloat(firstValue);
-  let second = parseFloat(secondValue);
-
+  let currentValue = parseFloat(firstValue);
+  let prevValue = parseFloat(secondValue);
+  if (isNaN(prevValue) || isNaN(currentValue)) return
   let resp
   switch (operator) {
     case "+":
-      resp = first + second
+      resp = currentValue + prevValue
       break;
     case "-":
-      resp = first - second
+      resp = currentValue - prevValue
       break;
     case "*":
-      resp = first * second
+      resp = currentValue * prevValue
       break;
     case "/":
-      resp = second / first
+      resp = prevValue / currentValue
       break;
     case "mod":
-      resp = first % second
+      resp = currentValue % prevValue
       break
     default:
       resp = undefined
       break;
   }
+  if (resp === undefined) return
   firstValue = resp;
   //storing values of the prev operation
   // prevOperandValue = second
