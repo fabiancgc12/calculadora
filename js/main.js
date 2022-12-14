@@ -127,7 +127,7 @@ function calculate(){
       resp = first * second
       break;
     case "/":
-      resp = first / second
+      resp = second / first
       break;
     case "mod":
       resp = first % second
