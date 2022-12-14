@@ -14,8 +14,10 @@ const operatorButtons = document.querySelectorAll(".operator");
 
 //we only are using this if we are carrying previus operation
 let prevOperandValue = undefined;
-let prevOperator = undefined
-let currentOperator = undefined
+let prevOperator = undefined;
+let currentOperator = undefined;
+let firstValue = undefined;
+let secondValue = undefined;
 
 inputValues.forEach(el => {
   const value = el.dataset.value
@@ -40,17 +42,45 @@ resetButton.addEventListener("click",() => {
   prevOperandValue = undefined
   prevOperator = undefined
   currentOperator = undefined
-  putValueOnDisplay(0)
+  firstValue = undefined;
+  secondValue = undefined;
+  putValueOnDisplay(firstValue)
 })
 
 equalButton.addEventListener("click",() => calculate())
 
+const operations = ["+","-","/","*","mod"]
+
 function pushValue(value){
-  const currentValue = display.innerHTML;
-  if (currentValue === "0")
-    putValueOnDisplay(value)
-  else
-    putValueOnDisplay(`${display.innerHTML}${value}`)
+  // const currentValue = display.innerHTML;
+
+  if (currentOperator){
+    if (!secondValue || secondValue === "0")
+      secondValue = value
+    else
+      secondValue = `${secondValue}${value}`
+  }
+  else{
+    if (!firstValue || firstValue === '0')
+      firstValue = value
+    else
+      firstValue = `${firstValue}${value}`
+  }
+  updateDisplay()
+  // if (currentValue === "0")
+  //   putValueOnDisplay(value)
+  // else
+  //   putValueOnDisplay(`${display.innerHTML}${value}`)
+}
+
+function updateDisplay(){
+  let resp = firstValue
+  if (currentOperator) {
+    const operator = currentOperator === "mod" ? " mod " : currentOperator
+    resp = `${resp}${operator}`
+  }
+  if (secondValue) resp = `${resp}${secondValue}`
+  putValueOnDisplay(resp)
 }
 
 function putValueOnDisplay(value){
@@ -60,34 +90,37 @@ function putValueOnDisplay(value){
 function handleOperationInputs(operator){
   if (prevOperator === operator)
     calculate()
-  currentOperator = operator
-  if (operator === "-"){
-    const subs = display.innerHTML.substr(1, display.innerHTML.length - 1)
-    console.log(subs)
-    if (!subs.includes("-") && display.innerHTML !== "-")
-      pushValue("-")
-  }
-  if (operator === "mod"){
-    if (!display.innerHTML.includes(operator))
-      pushValue(" mod ")
-  }
-  else {
+  if (!secondValue)
+    currentOperator = operator
+  // if (operator === "-"){
+    // const subs = display.innerHTML.substr(1, display.innerHTML.length - 1)
+    // console.log(subs)
+    // if (!subs.includes("-") && display.innerHTML !== "-")
+  //     pushValue("-")
+  // }
+  // if (operator === "mod"){
+  //   if (!display.innerHTML.includes(operator))
+  //     pushValue(" mod ")
+  // }
+  // else {
     if (!display.innerHTML.includes(operator))
       pushValue(operator)
-  }
+  // }
+  updateDisplay()
 }
 
 function calculate(){
-  const {firstValue,secondValue,operator} = getOperationInputs()
-  console.log({
-    firstValue,secondValue,operator
-  })
+  // const {firstValue,secondValue,operator} = getOperationInputs()
+  const operator = currentOperator;
+//   console.log({
+//     firstValue,secondValue,operator
+// })
 
   // if prev is empty it means there is no value to make and operation,
   // just put the first value on the display
-  if (!secondValue){
-    putValueOnDisplay(firstValue)
-  }
+  // if (!secondValue){
+  //   putValueOnDisplay(firstValue)
+  // }
 
   let resp
   switch (operator) {
@@ -110,12 +143,16 @@ function calculate(){
       resp = undefined
       break;
   }
-  prevOperandValue = secondValue
-  prevOperator = operator
-  currentOperator = undefined
+  firstValue = resp;
+  //reseting operator and secondvalue
+  currentOperator = undefined;
+  secondValue = undefined
+  // prevOperandValue = secondValue
+  // prevOperator = operator
   // debugger
-  if (resp || resp === 0)
+  if (resp || resp === 0){
     putValueOnDisplay(resp)
+  }
 }
 
 const regExp = /[+\-\*\/]/g
