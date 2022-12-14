@@ -95,6 +95,11 @@ function resetCalculator() {
 }
 
 function handleOperationInputs(operator){
+  //if the new operator is different than the one before then reset the previous operands
+  if (prevOperator !== operator){
+    prevOperator = undefined;
+    prevOperandValue = undefined
+  }
   // if there is a first and second value then calculate the result before everything
   if (firstValue && secondValue)
     calculate()
