@@ -19,7 +19,7 @@ const errorMessage = "ERROR"
 let prevOperandValue = undefined;
 let prevOperator = undefined;
 let currentOperator = undefined;
-let firstValue = undefined;
+let firstValue = 0;
 let secondValue = undefined;
 
 inputValues.forEach(el => {
@@ -36,8 +36,6 @@ operatorButtons.forEach(el => {
 
 resetButton.addEventListener("click",resetCalculator)
 
-
-
 equalButton.addEventListener("click",() => calculate())
 
 const operations = ["+","-","/","*","mod"]
@@ -53,7 +51,7 @@ function pushValue(value){
 
 function updateDisplay(){
   let resp = ''
-  if (firstValue) resp = `${resp}${firstValue}`
+  if (firstValue || firstValue == 0) resp = `${resp}${firstValue}`
   // if (currentOperator) {
   //   const operator = currentOperator === "mod" ? " mod " : currentOperator
   //   resp = `${resp}${operator}`
@@ -63,7 +61,7 @@ function updateDisplay(){
 }
 
 function putValueOnDisplay(value){
-  display.textContent = value;
+  display.textContent = firstValue;
   let prevTextContent = secondValue ?? ""
   prevTextContent+=currentOperator ? ` ${currentOperator}` : ""
   prevValueDisplay.textContent = prevTextContent
@@ -73,12 +71,15 @@ function resetCalculator() {
   prevOperandValue = undefined
   prevOperator = undefined
   currentOperator = undefined
-  firstValue = undefined;
+  firstValue = 0;
   secondValue = undefined;
   putValueOnDisplay(firstValue)
 }
 
 function handleOperationInputs(operator){
+  if (firstValue === "") return
+  if (secondValue || secondValue == 0)
+    calculate()
   currentOperator = operator;
   secondValue = firstValue;
   firstValue = ""
@@ -88,8 +89,7 @@ function handleOperationInputs(operator){
   //   prevOperandValue = undefined
   // }
   // if there is a first and second value then calculate the result before everything
-  // if (firstValue && secondValue)
-  //   calculate()
+
   // if (!secondValue)
   //   currentOperator = operator
   // if (operator === "-"){
@@ -112,44 +112,38 @@ function handleOperationInputs(operator){
 function calculate(){
   // const {firstValue,secondValue,operator} = getOperationInputs()
   let operator = currentOperator;
-  let first = firstValue ?? 0;
-  let second = secondValue ?? 0;
+  let first = parseFloat(firstValue);
+  let second = parseFloat(secondValue);
 
   let resp
   switch (operator) {
     case "+":
-      resp = parseFloat(first) + parseFloat(second)
+      resp = first + second
       break;
     case "-":
-      resp = parseFloat(first) - parseFloat(second)
+      resp = first - second
       break;
     case "*":
-      resp = parseFloat(first) * parseFloat(second)
+      resp = first * second
       break;
     case "/":
-      resp = parseFloat(first) / parseFloat(second)
+      resp = first / second
       break;
     case "mod":
-      resp = parseFloat(first) % parseFloat(second)
+      resp = first % second
       break
     default:
       resp = undefined
       break;
   }
-  if (isNaN(resp) || resp === Number.POSITIVE_INFINITY){
-    resetCalculator()
-    putValueOnDisplay(errorMessage)
-  }
-  else {
-    firstValue = resp;
-    //storing values of the prev operation
-    // prevOperandValue = second
-    // prevOperator = operator
-    //resetting operator and secondvalue
-    currentOperator = undefined;
-    secondValue = undefined;
-    putValueOnDisplay(resp)
-  }
+  firstValue = resp;
+  //storing values of the prev operation
+  // prevOperandValue = second
+  // prevOperator = operator
+  //resetting operator and firstValue
+  currentOperator = undefined;
+  secondValue = undefined;
+  updateDisplay()
 }
 
 const regExp = /[+\-\*\/]/g
