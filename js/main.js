@@ -24,8 +24,7 @@ inputValues.forEach(el => {
   if (value === ".")
     el.addEventListener("click", () => {
       //checking if display already has a dot
-      if (!display.innerHTML.includes("."))
-        pushValue(value)
+      pushValue(value)
     })
   else
     el.addEventListener("click", () => pushValue(value))
@@ -54,12 +53,14 @@ const operations = ["+","-","/","*","mod"]
 function pushValue(value){
   // const currentValue = display.innerHTML;
   if (currentOperator){
+    if  (value === "." && secondValue?.toString().includes(".")) return
     if (!secondValue || secondValue === "0")
       secondValue = value
     else
       secondValue = `${secondValue}${value}`
   }
   else{
+    if  (value === "." && firstValue?.toString().includes(".")) return
     if (!firstValue || firstValue === '0')
       firstValue = value
     else
