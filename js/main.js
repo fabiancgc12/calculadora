@@ -53,7 +53,6 @@ const operations = ["+","-","/","*","mod"]
 
 function pushValue(value){
   // const currentValue = display.innerHTML;
-
   if (currentOperator){
     if (!secondValue || secondValue === "0")
       secondValue = value
@@ -74,7 +73,8 @@ function pushValue(value){
 }
 
 function updateDisplay(){
-  let resp = firstValue
+  let resp = ''
+  if (firstValue) resp = `${resp}${firstValue}`
   if (currentOperator) {
     const operator = currentOperator === "mod" ? " mod " : currentOperator
     resp = `${resp}${operator}`
@@ -88,7 +88,8 @@ function putValueOnDisplay(value){
 }
 
 function handleOperationInputs(operator){
-  if (prevOperator === operator)
+  // if there is a first and second value then calculate the result before everything
+  if (firstValue && secondValue)
     calculate()
   if (!secondValue)
     currentOperator = operator
@@ -103,15 +104,22 @@ function handleOperationInputs(operator){
   //     pushValue(" mod ")
   // }
   // else {
-    if (!display.innerHTML.includes(operator))
-      pushValue(operator)
+  //   if (!display.innerHTML.includes(operator))
+  //     pushValue(operator)
   // }
   updateDisplay()
 }
 
 function calculate(){
   // const {firstValue,secondValue,operator} = getOperationInputs()
-  const operator = currentOperator;
+  let operator = currentOperator;
+  let first = firstValue ?? 0;
+  let second = secondValue ?? 0;
+
+  if (!secondValue && !operator){
+    second = prevOperandValue
+    operator = prevOperator
+  }
 //   console.log({
 //     firstValue,secondValue,operator
 // })
@@ -125,30 +133,32 @@ function calculate(){
   let resp
   switch (operator) {
     case "+":
-      resp = parseFloat(firstValue) + parseFloat(secondValue)
+      resp = parseFloat(first) + parseFloat(second)
       break;
     case "-":
-      resp = parseFloat(firstValue) - parseFloat(secondValue)
+      resp = parseFloat(first) - parseFloat(second)
       break;
     case "*":
-      resp = parseFloat(firstValue) * parseFloat(secondValue)
+      resp = parseFloat(first) * parseFloat(second)
       break;
     case "/":
-      resp = parseFloat(firstValue) / parseFloat(secondValue)
+      resp = parseFloat(first) / parseFloat(second)
       break;
     case "mod":
-      resp = parseFloat(firstValue) % parseFloat(secondValue)
+      resp = parseFloat(first) % parseFloat(second)
       break
     default:
       resp = undefined
       break;
   }
   firstValue = resp;
-  //reseting operator and secondvalue
+  //storing values of the prev operation
+  prevOperandValue = second
+  prevOperator = operator
+  //resetting operator and secondvalue
   currentOperator = undefined;
   secondValue = undefined
-  // prevOperandValue = secondValue
-  // prevOperator = operator
+
   // debugger
   if (resp || resp === 0){
     putValueOnDisplay(resp)
