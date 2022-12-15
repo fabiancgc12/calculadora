@@ -37,14 +37,22 @@ equalButton.addEventListener("click",() => {
 })
 
 backButton.addEventListener("click",() => {
-  if (firstValue?.toString().length > 0)
+  if (firstValue?.toString().length > 0){
     firstValue = firstValue.toString().substr(0,firstValue.toString().length - 1)
+    updateDisplay()
+  }
   else{
+    display.classList.add("displayUp");
     currentOperator = undefined
     firstValue = secondValue ?? "";
-    secondValue = undefined
+    secondValue = undefined;
+    updateDisplay()
+    display.onanimationend = () => {
+      display.classList.remove("displayUp")
+      display.onanimationend = () => {}
+    }
   }
-  updateDisplay()
+  // updateDisplay()
 })
 
 function pushValue(value){
@@ -62,13 +70,14 @@ function updateDisplay(){
 }
 
 function putValueOnDisplay(){
-  display.textContent = formatDisplay(firstValue)
   let prevTextContent = "";
   if (secondValue || secondValue == 0){
     prevTextContent = formatDisplay(secondValue)
   }
   prevTextContent+=currentOperator ? ` ${currentOperator}` : ""
+  display.textContent = formatDisplay(firstValue)
   prevValueDisplay.textContent = prevTextContent
+
 }
 
 function formatDisplay(value){
@@ -186,7 +195,6 @@ const operatorsKeys = ['+','-','/','*','r','m','p']
 
 document.addEventListener("keydown",(e) => {
   const key = e.key.toLowerCase()
-  console.log(key)
   if (valuesKeys.includes(key)){
     pushValue(key)
   }
