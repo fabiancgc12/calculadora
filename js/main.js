@@ -64,12 +64,32 @@ function updateDisplay(){
   putValueOnDisplay(resp)
 }
 
-function putValueOnDisplay(value){
-  display.textContent = firstValue;
-  let prevTextContent = secondValue ?? ""
+function putValueOnDisplay(){
+  display.textContent = formatDisplay(firstValue)
+  let prevTextContent = "";
+  if (secondValue || secondValue == 0){
+    prevTextContent = formatDisplay(secondValue)
+  }
   prevTextContent+=currentOperator ? ` ${currentOperator}` : ""
   prevValueDisplay.textContent = prevTextContent
 }
+
+function formatDisplay(value){
+  const normalFormat = formatter.format(value);
+  if (normalFormat.length > 14)
+    return enginerformatter.format(value)
+  return normalFormat
+
+}
+
+const formatter = new Intl.NumberFormat("es-ES",{
+  maximumFractionDigits:6,
+})
+
+const enginerformatter = new Intl.NumberFormat("es-ES",{
+  maximumFractionDigits:6,
+  notation:"scientific"
+})
 
 function resetCalculator() {
   prevOperandValue = undefined
@@ -109,7 +129,6 @@ function handleOperationInputs(operator){
 }
 
 function calculate(currentValue,prevValue,operator){
-  // const {firstValue,secondValue,operator} = getOperationInputs()
   currentValue = parseFloat(currentValue);
   prevValue = parseFloat(prevValue);
   if ((isNaN(prevValue) || isNaN(currentValue)) && operator !== "root") return
