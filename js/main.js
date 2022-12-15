@@ -101,10 +101,10 @@ function formatDisplay(value){
   if (value === "." || value === "-" || value === "") return value
   const dot = value.toString().endsWith(".") ? "." : ""
   const normalFormat = formatter.format(value);
+  if (normalFormat === "0") return value;
   if (normalFormat.length > 14)
     return scientificformatter.format(value) + dot
   return normalFormat + dot
-
 }
 
 const formatter = new Intl.NumberFormat("en-US",{
