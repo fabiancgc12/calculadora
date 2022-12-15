@@ -41,7 +41,7 @@ backButton.addEventListener("click",() => {
     firstValue = firstValue.toString().substr(0,firstValue.toString().length - 1)
   else{
     currentOperator = undefined
-    firstValue = secondValue;
+    firstValue = secondValue ?? "";
     secondValue = undefined
   }
   updateDisplay()
