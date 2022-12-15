@@ -139,7 +139,7 @@ function calculate(currentValue,prevValue,operator){
   // if the case was default then do nothing
   if (resp === undefined) return
   //if the result is NaN or infinity then show error message
-  if (isNaN(resp) || resp === Number.POSITIVE_INFINITY){
+  if (isNaN(resp) || resp === Number.POSITIVE_INFINITY || resp === Number.NEGATIVE_INFINITY){
     resetCalculator()
     firstValue = undefined
     updateDisplay()
