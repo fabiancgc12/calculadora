@@ -30,7 +30,7 @@ operatorButtons.forEach(el => {
 resetButton.addEventListener("click",resetCalculator)
 
 equalButton.addEventListener("click",() => {
-  if (!secondValue && !currentOperator && prevOperandValue && prevOperator)
+  if (secondValue === undefined && !currentOperator && prevOperandValue && prevOperator)
     calculate(prevOperandValue,firstValue,prevOperator)
   else if (secondValue && currentOperator){
     display.classList.add("moveDisplayDown");
@@ -126,7 +126,7 @@ function handleOperationInputs(operator){
   if (firstValue === "-") return
   if (operator === "root"){
     currentOperator = operator;
-    calculate(firstValue,1,currentOperator)
+    calculate(1,firstValue,currentOperator)
     return
   }
   if (operator === "-" && !firstValue){
@@ -173,7 +173,7 @@ function calculate(currentValue,prevValue,operator){
       resp =  prevValue ** currentValue
       break;
     case "root":
-      resp =  Math.sqrt(currentValue)
+      resp =  Math.sqrt(prevValue)
       break;
     default:
       resp = undefined
