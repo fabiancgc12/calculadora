@@ -75,18 +75,19 @@ function putValueOnDisplay(){
 }
 
 function formatDisplay(value){
+  const dot = value.toString().endsWith(".") ? "." : ""
   const normalFormat = formatter.format(value);
   if (normalFormat.length > 14)
-    return enginerformatter.format(value)
-  return normalFormat
+    return scientificformatter.format(value) + dot
+  return normalFormat + dot
 
 }
 
-const formatter = new Intl.NumberFormat("es-ES",{
+const formatter = new Intl.NumberFormat("en-US",{
   maximumFractionDigits:6,
 })
 
-const enginerformatter = new Intl.NumberFormat("es-ES",{
+const scientificformatter = new Intl.NumberFormat("en-US",{
   maximumFractionDigits:6,
   notation:"scientific"
 })
@@ -180,3 +181,5 @@ function calculate(currentValue,prevValue,operator){
   secondValue = undefined;
   updateDisplay()
 }
+
+
