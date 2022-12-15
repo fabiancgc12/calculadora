@@ -108,11 +108,11 @@ function formatDisplay(value){
 }
 
 const formatter = new Intl.NumberFormat("en-US",{
-  maximumFractionDigits:6,
+  maximumFractionDigits:10,
 })
 
 const scientificformatter = new Intl.NumberFormat("en-US",{
-  maximumFractionDigits:6,
+  maximumFractionDigits:10,
   notation:"scientific"
 })
 
