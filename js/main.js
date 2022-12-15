@@ -180,3 +180,23 @@ function calculate(currentValue,prevValue,operator){
   secondValue = undefined;
   updateDisplay()
 }
+
+const valuesKeys = ['1','2','3','4','5','6','7','8','9','0','.']
+const operatorsKeys = ['+','-','/','*','r','m','p']
+
+document.addEventListener("keydown",(e) => {
+  const key = e.key
+  if (valuesKeys.includes(key)){
+    pushValue(key)
+  }
+  else if (operatorsKeys.includes(key)){
+    if (key === "r")
+      handleOperationInputs("root")
+    else if (key === "m")
+      handleOperationInputs("mod")
+    else if (key === "p")
+      handleOperationInputs("^")
+    else
+      handleOperationInputs(key)
+  }
+})
