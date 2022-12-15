@@ -15,7 +15,7 @@ body{
   --darkPrimaryColor:#565554;
   --primaryColor:#9E9E9E;
   --lightPrimaryColor:#455A64;
-  --accentColor:#009688;
+  --accentColor:#E69500;
   --bgColor:#BDBDBD
 }
 
@@ -279,7 +279,7 @@ button:not(:is(.value,.equal)){
   top: 20px;
   right: 10%;
   border: 1px solid black;
-  background-color: var(--lightPrimaryColor);
+  background-color: var(--bgColor);
   border-radius: 5px;
   cursor: default;
 }
