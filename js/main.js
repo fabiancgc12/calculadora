@@ -185,7 +185,8 @@ const valuesKeys = ['1','2','3','4','5','6','7','8','9','0','.']
 const operatorsKeys = ['+','-','/','*','r','m','p']
 
 document.addEventListener("keydown",(e) => {
-  const key = e.key
+  const key = e.key.toLowerCase()
+  console.log(key)
   if (valuesKeys.includes(key)){
     pushValue(key)
   }
@@ -198,5 +199,14 @@ document.addEventListener("keydown",(e) => {
       handleOperationInputs("^")
     else
       handleOperationInputs(key)
+  }
+  else if (key === "enter"){
+    equalButton.click()
+  }
+  else if (key === "backspace"){
+    backButton.click()
+  }
+  else if (key === "delete"){
+    resetButton.click()
   }
 })
