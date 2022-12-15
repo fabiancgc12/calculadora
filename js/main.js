@@ -78,6 +78,11 @@ function resetCalculator() {
 
 function handleOperationInputs(operator){
   if (firstValue === "-") return
+  if (operator === "root"){
+    currentOperator = operator;
+    calculate()
+    return
+  }
   if (operator === "-" && !firstValue){
     firstValue="-";
     updateDisplay()
@@ -125,7 +130,7 @@ function calculate(){
   let operator = currentOperator;
   let currentValue = parseFloat(firstValue);
   let prevValue = parseFloat(secondValue);
-  if (isNaN(prevValue) || isNaN(currentValue)) return
+  if ((isNaN(prevValue) || isNaN(currentValue)) && operator !== "root") return
   let resp
   switch (operator) {
     case "+":
@@ -145,6 +150,9 @@ function calculate(){
       break;
     case "^":
       resp =  prevValue ** currentValue
+      break;
+    case "root":
+      resp =  Math.sqrt(currentValue)
       break;
     default:
       resp = undefined
