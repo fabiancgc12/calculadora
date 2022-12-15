@@ -17,7 +17,7 @@ let secondValue = undefined;
 
 inputValues.forEach(el => {
   const value = el.dataset.value
-  el.addEventListener("click", () => pushValue(value))
+  el.addEventListener("click", () => pushValueOnDisplay(value))
 })
 
 operatorButtons.forEach(el => {
@@ -30,9 +30,10 @@ operatorButtons.forEach(el => {
 resetButton.addEventListener("click",resetCalculator)
 
 equalButton.addEventListener("click",() => {
+  if (hasError()) return
   if (secondValue === undefined && !currentOperator && prevOperandValue && prevOperator)
     calculate(prevOperandValue,firstValue,prevOperator)
-  else if (secondValue && currentOperator){
+  else if ((secondValue || secondValue === 0) && currentOperator){
     display.classList.add("moveDisplayDown");
     calculate(firstValue, secondValue, currentOperator);
     display.onanimationend = () => {
@@ -45,7 +46,9 @@ equalButton.addEventListener("click",() => {
 
 backButton.addEventListener("click",() => {
   prevOperator = undefined
-  prevOperandValue = undefined
+  prevOperandValue = undefined;
+  //dont do nothing if there was an error
+  if (hasError()) return
   if (firstValue?.toString().length > 0){
     firstValue = firstValue.toString().substr(0,firstValue.toString().length - 1)
     updateDisplay()
@@ -66,9 +69,10 @@ backButton.addEventListener("click",() => {
   // updateDisplay()
 })
 
-function pushValue(value){
+function pushValueOnDisplay(value){
   prevOperandValue = undefined;
-  prevOperator = undefined
+  prevOperator = undefined;
+  if (hasError()) return
   if  (value === "." && firstValue?.toString().includes(".")) return
   firstValue = `${firstValue}${value}`
   updateDisplay()
@@ -92,6 +96,8 @@ function putValueOnDisplay(){
 }
 
 function formatDisplay(value){
+  if (value === undefined)
+    return ""
   if (value === "." || value === "-" || value === "") return value
   const dot = value.toString().endsWith(".") ? "." : ""
   const normalFormat = formatter.format(value);
@@ -110,6 +116,10 @@ const scientificformatter = new Intl.NumberFormat("en-US",{
   notation:"scientific"
 })
 
+function hasError(){
+  return display.innerHTML === errorMessage
+}
+
 function resetCalculator() {
   prevOperandValue = undefined
   prevOperator = undefined
@@ -121,7 +131,8 @@ function resetCalculator() {
 
 function handleOperationInputs(operator){
   prevOperandValue = undefined;
-  prevOperator = undefined
+  prevOperator = undefined;
+  if (hasError()) return
   if (firstValue === "" && !secondValue && operator !== "-") return
   if (firstValue === "-") return
   if (operator === "root"){
@@ -184,8 +195,6 @@ function calculate(currentValue,prevValue,operator){
   //if the result is NaN or infinity then show error message
   if (isNaN(resp) || resp === Number.POSITIVE_INFINITY || resp === Number.NEGATIVE_INFINITY){
     resetCalculator()
-    firstValue = undefined
-    updateDisplay()
     display.innerHTML = errorMessage;
     return
   }
@@ -207,7 +216,7 @@ const operatorsKeys = ['+','-','/','*','r','m','p']
 document.addEventListener("keydown",(e) => {
   const key = e.key.toLowerCase()
   if (valuesKeys.includes(key)){
-    pushValue(key)
+    pushValueOnDisplay(key)
   }
   else if (operatorsKeys.includes(key)){
     if (key === "r")
