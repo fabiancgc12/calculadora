@@ -32,23 +32,34 @@ resetButton.addEventListener("click",resetCalculator)
 equalButton.addEventListener("click",() => {
   if (!secondValue && !currentOperator && prevOperandValue && prevOperator)
     calculate(prevOperandValue,firstValue,prevOperator)
-  else
-    calculate(firstValue, secondValue, currentOperator)
+  else if (secondValue && currentOperator){
+    display.classList.add("moveDisplayDown");
+    calculate(firstValue, secondValue, currentOperator);
+    display.onanimationend = () => {
+      display.classList.remove("moveDisplayDown")
+      display.onanimationend = () => {}
+    }
+  }
+
 })
 
 backButton.addEventListener("click",() => {
+  prevOperator = undefined
+  prevOperandValue = undefined
   if (firstValue?.toString().length > 0){
     firstValue = firstValue.toString().substr(0,firstValue.toString().length - 1)
     updateDisplay()
   }
   else{
-    display.classList.add("displayUp");
+    display.classList.add("moveDisplayDown");
     currentOperator = undefined
     firstValue = secondValue ?? "";
     secondValue = undefined;
-    updateDisplay()
+    updateDisplay();
+    //this will start the animation of the current value on top to down
+    //pure css was not enough
     display.onanimationend = () => {
-      display.classList.remove("displayUp")
+      display.classList.remove("moveDisplayDown")
       display.onanimationend = () => {}
     }
   }

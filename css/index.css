@@ -89,10 +89,7 @@ body{
   right: 0;
 }
 
-#display.displayUp{
-    font-size: 1rem;
-    top: -46%;
-    right: 48%;
+#display.moveDisplayDown{
     animation: moveDownNumbers .3s;
 }
 
