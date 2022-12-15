@@ -12,7 +12,7 @@ const errorMessage = "ERROR"
 let prevOperandValue = undefined;
 let prevOperator = undefined;
 let currentOperator = undefined;
-let firstValue = 0;
+let firstValue = '';
 let secondValue = undefined;
 
 inputValues.forEach(el => {
@@ -51,10 +51,7 @@ function pushValue(value){
   prevOperandValue = undefined;
   prevOperator = undefined
   if  (value === "." && firstValue?.toString().includes(".")) return
-  if (!firstValue || firstValue === '0')
-    firstValue = value
-  else
-    firstValue = `${firstValue}${value}`
+  firstValue = `${firstValue}${value}`
   updateDisplay()
 }
 
@@ -75,6 +72,7 @@ function putValueOnDisplay(){
 }
 
 function formatDisplay(value){
+  if (value === "." || value === "-" || value === "") return value
   const dot = value.toString().endsWith(".") ? "." : ""
   const normalFormat = formatter.format(value);
   if (normalFormat.length > 14)
@@ -96,7 +94,7 @@ function resetCalculator() {
   prevOperandValue = undefined
   prevOperator = undefined
   currentOperator = undefined
-  firstValue = 0;
+  firstValue = '';
   secondValue = undefined;
   putValueOnDisplay(firstValue)
 }
@@ -104,6 +102,7 @@ function resetCalculator() {
 function handleOperationInputs(operator){
   prevOperandValue = undefined;
   prevOperator = undefined
+  if (firstValue === "" && !secondValue && operator !== "-") return
   if (firstValue === "-") return
   if (operator === "root"){
     currentOperator = operator;
@@ -181,5 +180,3 @@ function calculate(currentValue,prevValue,operator){
   secondValue = undefined;
   updateDisplay()
 }
-
-
