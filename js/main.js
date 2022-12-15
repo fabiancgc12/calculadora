@@ -36,11 +36,16 @@ operatorButtons.forEach(el => {
 
 resetButton.addEventListener("click",resetCalculator)
 
-equalButton.addEventListener("click",() => calculate())
-
-const operations = ["+","-","/","*","mod"]
+equalButton.addEventListener("click",() => {
+  if (!secondValue && !currentOperator && prevOperandValue && prevOperator)
+    calculate(prevOperandValue,firstValue,prevOperator)
+  else
+    calculate(firstValue, secondValue, currentOperator)
+})
 
 function pushValue(value){
+  prevOperandValue = undefined;
+  prevOperator = undefined
   if  (value === "." && firstValue?.toString().includes(".")) return
   if (!firstValue || firstValue === '0')
     firstValue = value
@@ -52,11 +57,6 @@ function pushValue(value){
 function updateDisplay(){
   let resp = ''
   if (firstValue || firstValue == 0) resp = `${resp}${firstValue}`
-  // if (currentOperator) {
-  //   const operator = currentOperator === "mod" ? " mod " : currentOperator
-  //   resp = `${resp}${operator}`
-  // }
-  // if (secondValue) resp = `${resp}${secondValue}`
   putValueOnDisplay(resp)
 }
 
@@ -77,10 +77,12 @@ function resetCalculator() {
 }
 
 function handleOperationInputs(operator){
+  prevOperandValue = undefined;
+  prevOperator = undefined
   if (firstValue === "-") return
   if (operator === "root"){
     currentOperator = operator;
-    calculate()
+    calculate(firstValue,1,currentOperator)
     return
   }
   if (operator === "-" && !firstValue){
@@ -94,42 +96,18 @@ function handleOperationInputs(operator){
     return
   }
   if (secondValue || secondValue == 0)
-    calculate()
+    calculate(firstValue,secondValue,currentOperator)
 
   currentOperator = operator;
   secondValue = firstValue;
   firstValue = ""
-  //if the new operator is different than the one before then reset the previous operands
-  // if (prevOperator !== operator){
-  //   prevOperator = undefined;
-  //   prevOperandValue = undefined
-  // }
-  // if there is a first and second value then calculate the result before everything
-
-  // if (!secondValue)
-  //   currentOperator = operator
-  // if (operator === "-"){
-    // const subs = display.innerHTML.substr(1, display.innerHTML.length - 1)
-    // console.log(subs)
-    // if (!subs.includes("-") && display.innerHTML !== "-")
-  //     pushValue("-")
-  // }
-  // if (operator === "mod"){
-  //   if (!display.innerHTML.includes(operator))
-  //     pushValue(" mod ")
-  // }
-  // else {
-  //   if (!display.innerHTML.includes(operator))
-  //     pushValue(operator)
-  // }
   updateDisplay()
 }
 
-function calculate(){
+function calculate(currentValue,prevValue,operator){
   // const {firstValue,secondValue,operator} = getOperationInputs()
-  let operator = currentOperator;
-  let currentValue = parseFloat(firstValue);
-  let prevValue = parseFloat(secondValue);
+  currentValue = parseFloat(currentValue);
+  prevValue = parseFloat(prevValue);
   if ((isNaN(prevValue) || isNaN(currentValue)) && operator !== "root") return
   let resp
   switch (operator) {
@@ -158,19 +136,22 @@ function calculate(){
       resp = undefined
       break;
   }
+  // if the case was default then do nothing
   if (resp === undefined) return
+  //if the result is NaN or infinity then show error message
   if (isNaN(resp) || resp === Number.POSITIVE_INFINITY){
     resetCalculator()
     firstValue = undefined
     updateDisplay()
     display.innerHTML = errorMessage;
     return
-
   }
   firstValue = resp;
-  //storing values of the prev operation
-  // prevOperandValue = second
-  // prevOperator = operator
+ // storing values of the prev operation only when there is none set
+  if (!prevOperandValue){
+    prevOperandValue = currentValue
+    prevOperator = operator
+  }
   //resetting operator and firstValue
   currentOperator = undefined;
   secondValue = undefined;
