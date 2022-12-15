@@ -1,13 +1,6 @@
 const display = document.querySelector("#display");
 const prevValueDisplay = document.querySelector("#prevValue");
-const moduleButton = document.querySelector(".module");
-const powButton = document.querySelector(".pow");
-const sqrtButton = document.querySelector(".sqrt");
-const sumButton = document.querySelector(".sum");
-const resButton = document.querySelector(".minus");
-const byButton = document.querySelector(".by");
-const divButton = document.querySelector(".div");
-const dotButton = document.querySelector(".dot");
+const backButton = document.querySelector(".back");
 const resetButton = document.querySelector(".reset");
 const equalButton = document.querySelector(".equal");
 const inputValues = document.querySelectorAll(".value");
@@ -41,6 +34,17 @@ equalButton.addEventListener("click",() => {
     calculate(prevOperandValue,firstValue,prevOperator)
   else
     calculate(firstValue, secondValue, currentOperator)
+})
+
+backButton.addEventListener("click",() => {
+  if (firstValue?.toString().length > 0)
+    firstValue = firstValue.toString().substr(0,firstValue.toString().length - 1)
+  else{
+    currentOperator = undefined
+    firstValue = secondValue;
+    secondValue = undefined
+  }
+  updateDisplay()
 })
 
 function pushValue(value){

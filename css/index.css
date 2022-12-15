@@ -25,14 +25,20 @@ body{
   gap: 5px;
   background: var(--bgColor);
   border-radius: 5px;
-  grid-template-columns: repeat(4,minmax(70px, 1fr));
+  grid-template-columns: repeat(5,minmax(70px, 1fr));
   grid-template-rows: repeat(6,1fr);
-  grid-template-areas: "display display display display"
-                        "pow sqrt res ce"
-                        "v1 v2 v3 div"
-                        "v4 v5 v6 by"
-                        "v7 v8 v9 minus"
-                        "v0 dot equal sum";
+  /*grid-template-areas: "display display display display"*/
+  /*                      "pow sqrt res ce"*/
+  /*                      "v1 v2 v3 div"*/
+  /*                      "v4 v5 v6 by"*/
+  /*                      "v7 v8 v9 minus"*/
+  /*                      "v0 dot equal sum";*/
+  grid-template-areas: "display display display display display"
+                        "pow sqrt res ce ce"
+                        "v1 v2 v3 back back"
+                        "v4 v5 v6 div by"
+                        "v7 v8 v9  sum minus"
+                        "v0 v0 dot equal equal";
   box-shadow: black 0px 5px 20px 5px;
 }
 
@@ -84,7 +90,7 @@ body{
   background-color: var(--darkPrimaryColor);
 }
 
-.pow,.sqrt,.module,.div,.by,.sum,.minus,.reset{
+button:not(:is(.value,.equal)){
   background-color: var(--primaryColor);
 }
 
@@ -106,6 +112,10 @@ body{
 
 .reset{
   grid-area: ce;
+}
+
+.back{
+  grid-area:back;
 }
 
 .sum{
