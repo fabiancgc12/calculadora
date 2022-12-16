@@ -6,6 +6,7 @@ const equalButton = document.querySelector(".equal");
 const inputValues = document.querySelectorAll(".value");
 const operatorButtons = document.querySelectorAll(".operator");
 
+const maxDigits = 6
 const errorMessage = "ERROR"
 
 //we only are using this if we are carrying previus operation
@@ -37,7 +38,6 @@ equalButton.addEventListener("click",() => {
     display.classList.add("moveDisplayDown");
     calculate(firstValue, secondValue, currentOperator);
     display.onanimationend = () => {
-
       display.classList.remove("moveDisplayDown")
       display.onanimationend = () => {}
     }
@@ -67,7 +67,6 @@ backButton.addEventListener("click",(e) => {
       display.onanimationend = () => {}
     }
   }
-  // updateDisplay()
 })
 
 function pushValueOnDisplay(value){
@@ -95,17 +94,28 @@ function putValueOnDisplay(value){
 }
 
 function formatDisplay(value){
-  // if (value === "")
-  //   debugger
   if (value === undefined)
     return ""
-  const notation = value.toString().length > 15 ? "scientific" : "standard"
-  const resp = value.toLocaleString("en-US",{
-    maximumFractionDigits:10,
-    notation
-  })
-  return resp
+  const normalFormat = value.toLocaleString("en-US",{
+    maximumFractionDigits:maxDigits,
+  });
+  if (normalFormat === "0") return value;
+  if (normalFormat.length > 15){
+    return value.toLocaleString("en-US",{
+      maximumFractionDigits:maxDigits,
+      notation:"scientific"
+    })
+    const dot = value.toString().endsWith(".") ? "." : ""
+    return scientificFormatter.format(value) + dot
+  }
+  return normalFormat
 }
+
+const scientificFormatter = new Intl.NumberFormat("en-US",{
+  maximumFractionDigits:maxDigits,
+  notation:"scientific"
+})
+
 
 function hasError(){
   return display.textContent === errorMessage
@@ -189,7 +199,8 @@ function calculate(currentValue,prevValue,operator){
     putValueOnDisplay(errorMessage)
     return
   }
-  firstValue = resp;
+  // haciendo que tenga un maximo de 5 digitos
+  firstValue = parseFloat(resp.toFixed(maxDigits));
  // storing values of the prev operation only when there is none set
   if (!prevOperandValue){
     prevOperandValue = currentValue
