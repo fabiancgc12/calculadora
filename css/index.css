@@ -1,3 +1,8 @@
+@font-face {
+  font-family: "Roboto";
+  src: url("../assets/font/Roboto-Light.ttf");
+}
+
 *,
 *::before,
 *::after{
@@ -12,6 +17,7 @@ body{
   background-image: url("../assets/background.png");
   background-repeat: no-repeat;
   height: 100vh;
+  font-family: Roboto, serif;
   --darkPrimaryColor:#565554;
   --primaryColor:#9E9E9E;
   --lightPrimaryColor:#455A64;
