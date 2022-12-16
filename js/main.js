@@ -37,6 +37,7 @@ equalButton.addEventListener("click",() => {
     display.classList.add("moveDisplayDown");
     calculate(firstValue, secondValue, currentOperator);
     display.onanimationend = () => {
+
       display.classList.remove("moveDisplayDown")
       display.onanimationend = () => {}
     }
@@ -79,45 +80,35 @@ function pushValueOnDisplay(value){
 }
 
 function updateDisplay(){
-  let resp = ''
-  if (firstValue || firstValue == 0) resp = `${resp}${firstValue}`
-  putValueOnDisplay(resp)
-}
-
-function putValueOnDisplay(){
   let prevTextContent = "";
   if (secondValue || secondValue == 0){
     prevTextContent = formatDisplay(secondValue)
   }
   prevTextContent+=currentOperator ? ` ${currentOperator}` : ""
-  display.textContent = formatDisplay(firstValue)
+  // display.textContent = formatDisplay(firstValue)
   prevValueDisplay.textContent = prevTextContent
+  putValueOnDisplay(formatDisplay(firstValue))
+}
 
+function putValueOnDisplay(value){
+  display.textContent = value
 }
 
 function formatDisplay(value){
+  // if (value === "")
+  //   debugger
   if (value === undefined)
     return ""
-  if (value === "." || value === "-" || value === "") return value
-  const dot = value.toString().endsWith(".") ? "." : ""
-  const normalFormat = formatter.format(value);
-  if (normalFormat === "0") return value;
-  if (normalFormat.length > 14)
-    return scientificformatter.format(value) + dot
-  return normalFormat + dot
+  const notation = value.toString().length > 15 ? "scientific" : "standard"
+  const resp = value.toLocaleString("en-US",{
+    maximumFractionDigits:10,
+    notation
+  })
+  return resp
 }
 
-const formatter = new Intl.NumberFormat("en-US",{
-  maximumFractionDigits:10,
-})
-
-const scientificformatter = new Intl.NumberFormat("en-US",{
-  maximumFractionDigits:10,
-  notation:"scientific"
-})
-
 function hasError(){
-  return display.innerHTML === errorMessage
+  return display.textContent === errorMessage
 }
 
 function resetCalculator() {
@@ -126,7 +117,7 @@ function resetCalculator() {
   currentOperator = undefined
   firstValue = '';
   secondValue = undefined;
-  putValueOnDisplay(firstValue)
+  updateDisplay()
 }
 
 function handleOperationInputs(operator){
@@ -195,7 +186,7 @@ function calculate(currentValue,prevValue,operator){
   //if the result is NaN or infinity then show error message
   if (isNaN(resp) || resp === Number.POSITIVE_INFINITY || resp === Number.NEGATIVE_INFINITY){
     resetCalculator()
-    display.innerHTML = errorMessage;
+    putValueOnDisplay(errorMessage)
     return
   }
   firstValue = resp;
@@ -207,6 +198,7 @@ function calculate(currentValue,prevValue,operator){
   //resetting operator and firstValue
   currentOperator = undefined;
   secondValue = undefined;
+
   updateDisplay()
 }
 
