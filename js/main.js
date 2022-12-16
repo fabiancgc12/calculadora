@@ -45,7 +45,7 @@ equalButton.addEventListener("click",() => {
 
 })
 
-backButton.addEventListener("click",() => {
+backButton.addEventListener("click",(e) => {
   prevOperator = undefined
   prevOperandValue = undefined;
   //dont do nothing if there was an error
@@ -206,6 +206,9 @@ const valuesKeys = ['1','2','3','4','5','6','7','8','9','0','.']
 const operatorsKeys = ['+','-','/','*','r','m','p']
 
 document.addEventListener("keydown",(e) => {
+  //this one is to stop the normal behavior of enter
+  //THIS CAUSED A BUG THAT TOOK LIKE 24 HOURS TO SOLVE WTF
+  e.preventDefault()
   const key = e.key.toLowerCase()
   if (valuesKeys.includes(key)){
     pushValueOnDisplay(key)
