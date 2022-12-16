@@ -277,6 +277,12 @@ button:not(:is(.value,.equal)){
   cursor: pointer;
 }
 
+@media screen and (max-width: 450px){
+  .help{
+    display: none;
+  }
+}
+
 .info{
   display: none;
   position: absolute;
